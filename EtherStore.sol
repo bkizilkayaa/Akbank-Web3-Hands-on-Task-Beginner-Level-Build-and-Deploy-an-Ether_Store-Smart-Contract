@@ -6,18 +6,19 @@ pragma solidity ^0.8.7;
 contract EtherStore{
      address immutable owner;
      uint256 public balance;
+
     constructor(){
-        owner=msg.sender;
+        owner=msg.sender; //stores address who deployed the contract on the blockchain.
     }
 
-    receive() external payable {
+    receive() external payable { //marked with "external payable" keywords to receive payments from outside.                         
         balance+=msg.value;
     }
 
     function withdraw(uint256 _amount , address payable _toAddress) public {
-        require(msg.sender==owner,"Only owner can withdraw!");
-        require(balance>=_amount,"Insufficient balance!");
-        balance-=_amount;
-        _toAddress.transfer(_amount);
+        require(msg.sender==owner,"Only owner can withdraw!"); //check msg.sender is owner
+        require(balance>=_amount,"Insufficient balance!");  //check the balance
+        balance-=_amount; //first the balance is reduced
+        _toAddress.transfer(_amount); //and after that, we can transfer Ether.
     }
 }
